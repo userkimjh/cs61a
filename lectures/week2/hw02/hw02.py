@@ -64,9 +64,10 @@ def accumulate(combiner, base, n, f):
     """
     "*** YOUR CODE HERE ***"
     total = base
-    while n > 0: 
-        total = combiner(total, f(n))
-        n -= 1 
+    i = 1
+    while i <= n:
+        total = combiner(total, f(i))
+        i += 1 
     return total
 
 
@@ -85,6 +86,7 @@ def summation_using_accumulate(n, f):
     True
     """
     "*** YOUR CODE HERE ***"
+    return accumulate(add, 0, n, f)
 
 def product_using_accumulate(n, f):
     """An implementation of product using accumulate.
@@ -100,6 +102,7 @@ def product_using_accumulate(n, f):
     True
     """
     "*** YOUR CODE HERE ***"
+    return accumulate(mul, 1, n, f)
 
 def compose1(h, g):
     """Return a function f, such that f(x) = h(g(x))."""
@@ -122,10 +125,18 @@ def make_repeater(h, n):
     >>> make_repeater(square, 0)(5) # Yes, it makes sense to apply the function zero times! 
     5
     """
-    "*** YOUR CODE HERE ***"
-    while n > 0:
-        return square
-    n -= 1
+    "*** YOUR CODE HERE ***" 
+    def g(x):
+        result = 0
+        if n == 0:
+            return x
+        for i in range(n):
+            if i == 0:
+                result = h(x)
+            else:
+                result = h(result)
+        return result
+    return g
 ##########################
 # Just for fun Questions #
 ##########################
