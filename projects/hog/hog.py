@@ -244,8 +244,26 @@ def announce_highest(who, prev_high=0, prev_score=0):
     assert who == 0 or who == 1, 'The who argument should indicate a player.'
     # BEGIN PROBLEM 7
     "*** YOUR CODE HERE ***"
+    print("DEBUG: test")
+    prev_score, prev_high = prev_score, prev_high
+    print("DEBUG: ", prev_score, prev_high)
+    def f(score0, score1, prev_score=prev_score, prev_high=prev_high):
+        print("DEBUG: score0 score1 prev high", score0, score1, prev_score, prev_high)
+        if who == 0:
+            curr_score = score0
+        else:
+            curr_score = score1
+        print("DEBUG: curr prev high", curr_score, prev_score, prev_high)
+        if  curr_score - prev_score > prev_high:
+            print("DEBUG: INSIDE!!!!")
+            print(curr_score - prev_score, "point(s)! That's the biggest gain yet for Player", who)
+            prev_high = curr_score - prev_score
+            print("DEBUG: check prev_high changed", prev_high)
+        prev_score = curr_score
+        return f
+    return f 
     # END PROBLEM 7
-
+    
 
 #######################
 # Phase 3: Strategies #
