@@ -23,7 +23,17 @@ def roll_dice(num_rolls, dice=six_sided):
     # BEGIN PROBLEM 1
     "*** YOUR CODE HERE ***"
     # END PROBLEM 1
-
+    sum_dice = 0
+    outcome_one = False
+    for i in range(num_rolls):
+        dice_num = dice()
+        sum_dice += dice_num
+        if dice_num == 1:
+            outcome_one = True
+    if outcome_one == True:
+        return 1
+    else:
+        return sum_dice
 
 def free_bacon(score):
     """Return the points scored from rolling 0 dice (Free Bacon).
@@ -34,7 +44,17 @@ def free_bacon(score):
     # BEGIN PROBLEM 2
     "*** YOUR CODE HERE ***"
     # END PROBLEM 2
-
+    score_cubed = score ** 3
+    score_split = str(score_cubed)
+    for i in range(len(score_split)):
+        int_score = int(score_split[i])
+        if i == 0:
+            sum_score_split = int_score
+        elif i % 2 == 0:
+            sum_score_split += int_score
+        else:
+            sum_score_split -= int_score 
+    return 1 + abs(sum_score_split)
 
 def take_turn(num_rolls, opponent_score, dice=six_sided):
     """Simulate a turn rolling NUM_ROLLS dice, which may be 0 (Free Bacon).
@@ -52,7 +72,10 @@ def take_turn(num_rolls, opponent_score, dice=six_sided):
     # BEGIN PROBLEM 3
     "*** YOUR CODE HERE ***"
     # END PROBLEM 3
-
+    if num_rolls == 0: 
+        return free_bacon(opponent_score)
+    else:
+        return roll_dice(num_rolls, dice)
 
 def is_swap(player_score, opponent_score):
     """
@@ -61,7 +84,12 @@ def is_swap(player_score, opponent_score):
     # BEGIN PROBLEM 4
     "*** YOUR CODE HERE ***"
     # END PROBLEM 4
-
+    sum_squared = 3 ** (player_score + opponent_score)
+    to_string = str(sum_squared)
+    if to_string[0] == to_string[-1]:
+        return True
+    else:
+        return False
 
 def other(who):
     """Return the other player, for a player WHO numbered 0 or 1.
@@ -100,13 +128,40 @@ def play(strategy0, strategy1, score0=0, score1=0, dice=six_sided,
     who = 0  # Who is about to take a turn, 0 (first) or 1 (second)
     # BEGIN PROBLEM 5
     "*** YOUR CODE HERE ***"
+    run_once = True
+    if run_once:
+        run_once = False
+        prev_score0, prev_score1 = 0, 0
+    while score0 < goal and score1 < goal:
+        if who == 0:
+            roll = strategy0(score0, score1)
+            roll_sum = take_turn(roll, score1, dice)
+            score0 += roll_sum
+            if feral_hogs:
+                if abs(roll - prev_score0) == 2: 
+                    score0 += 3
+            prev_score0 = roll_sum
+        else:
+            roll = strategy1(score1, score0)
+            roll_sum = take_turn(roll, score0, dice)
+            score1 += roll_sum
+            if feral_hogs:
+                if abs(roll - prev_score1) == 2:
+                    score1 += 3
+            prev_score1 = roll_sum
+
+        if is_swap(score0, score1):
+            score0, score1 = score1, score0
+        print("DEBUG: ", say(score0, score1))
+        say(score0, score1)
+        who = other(who)
     # END PROBLEM 5
     # (note that the indentation for the problem 6 prompt (***YOUR CODE HERE***) might be misleading)
     # BEGIN PROBLEM 6
     "*** YOUR CODE HERE ***"
     # END PROBLEM 6
     return score0, score1
-
+    
 
 #######################
 # Phase 2: Commentary #
