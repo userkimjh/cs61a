@@ -6,3 +6,5 @@
 
 ````
 
+Need to finish week 2 notes
+
