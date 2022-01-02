@@ -18,7 +18,7 @@ def lambda_curry2(func):
     3
     """
     "*** YOUR CODE HERE ***"
-    return ______
+    return lambda x: lambda y: func(x, y) 
 
 def count_cond(condition):
     """Returns a function with one parameter N that counts all the numbers from
@@ -48,6 +48,15 @@ def count_cond(condition):
     8
     """
     "*** YOUR CODE HERE ***"
+    def f(x):
+        i = 1
+        total = 0 
+        while i <= x:
+            if condition(x, i):
+                total = total + 1
+            i += 1
+        return total
+    return f
 
 def both_paths(sofar="S"):
     """
@@ -61,7 +70,15 @@ def both_paths(sofar="S"):
     SLL
     """
     "*** YOUR CODE HERE ***"
-
+    print(sofar)
+    def left(sofar=sofar):
+        print("DEBUG:", sofar)
+        sofar += "L"
+        return both_paths(sofar)
+    def right(sofar=sofar):
+        sofar += "R"
+        return both_paths(sofar)
+    return left, right
 # Higher Order Functions
 
 def compose1(f, g):
